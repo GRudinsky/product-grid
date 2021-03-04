@@ -1,0 +1,52 @@
+@import '../../styles/colors';
+
+.cardWrapper {
+  height: 100%;
+  width: auto;
+  border: 2px solid $color-border;
+  border-radius: 5px;
+  text-align: left;
+  background: $color-white;
+  overflow: hidden;
+
+  .imageContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    height: 80%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position-x: center;
+
+    &__checkBoxWrapper {
+      text-align: left;
+    }
+    &__promoWrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: $color-white;
+      background: $color-danger;
+      opacity: 0.5;
+      height: 10%;
+    }
+  }
+
+  .detailsContainer {
+    max-height: 20%;
+    padding: 1vmin;
+
+    &__name {
+      margin-bottom: 1vmin;
+    }
+    &__price {
+      margin-bottom: 1vmin;
+
+      span {
+        color: $color-danger;
+        text-decoration: line-through;
+      }
+    }
+  }
+}

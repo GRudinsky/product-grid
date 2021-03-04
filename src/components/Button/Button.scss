@@ -1,0 +1,10 @@
+@import '../../styles/colors';
+
+.button {
+  width: 15vw;
+  height: 4vh;
+  background: $color-purple;
+  color: $color-white;
+  border-radius: 3px;
+  font-size: 1vw;
+}

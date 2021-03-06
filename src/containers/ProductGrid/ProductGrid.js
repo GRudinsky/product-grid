@@ -15,10 +15,20 @@ const ProductGrid = () => {
     getProducts();
   }, []);
 
+  const fixResponseBooleans = (response) => {
+    return response.map((item) => {
+      return {
+        ...item,
+        available: item.available === 'TRUE' ? true : false,
+        lowOnStock: item.lowOnStock === 'TRUE' ? true : false
+      };
+    });
+  };
+
   const getProducts = async () => {
     try {
       const response = await list(URL_MOCKY);
-      await setProducts(await response.json());
+      await setProducts(fixResponseBooleans(await response.json()));
     } catch (e) {
       setError(ERROR_MESSAGE_LIST);
     }
@@ -39,7 +49,6 @@ const ProductGrid = () => {
     setProducts(unCheckedProducts);
   };
   const checkedLength = products.filter((item) => item.isChecked).length;
-
   return (
     <>
       <div className="header">

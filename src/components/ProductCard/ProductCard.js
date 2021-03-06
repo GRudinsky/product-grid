@@ -18,8 +18,8 @@ const ProductCard = ({ data, checkHandler }) => {
     backgroundImage: `url(${imageUrl})`
   };
   const formatQuantity = () => {
-    const noStock = quantity === 0 || available === 'FALSE';
-    const lowStock = !noStock && lowOnStock === 'TRUE';
+    const noStock = quantity === 0 || !available;
+    const lowStock = !noStock && lowOnStock;
     return (
       <div className="detailsContainer__quantity">
         <h6 className={noStock ? 'danger' : 'success'}>

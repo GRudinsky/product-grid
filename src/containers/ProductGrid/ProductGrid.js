@@ -28,7 +28,7 @@ const ProductGrid = () => {
   const getProducts = async () => {
     try {
       const response = await list(URL_MOCKY);
-      await setProducts(fixResponseBooleans(await response.json()));
+      setProducts(fixResponseBooleans(response));
     } catch (e) {
       setError(ERROR_MESSAGE_LIST);
     }
@@ -43,7 +43,6 @@ const ProductGrid = () => {
     );
     setProducts(mappedProducts);
   };
-
   const removeChecked = () => {
     const unCheckedProducts = products.filter((item) => !item.isChecked);
     setProducts(unCheckedProducts);
@@ -62,8 +61,8 @@ const ProductGrid = () => {
         )}
       </div>
       <div className="mainWrapper">
-        {loading && <h2>Loading...</h2>}
-        {error && <h2>{error}</h2>}
+        {loading && <h2 id="loadingMessage">Loading...</h2>}
+        {error && <h2 id="errorMessage">{error}</h2>}
         {!loading && !error && (
           <div className="gridWrapper">
             {products?.map((item, idx) => {

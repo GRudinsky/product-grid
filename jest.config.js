@@ -1,3 +1,5 @@
+require('jest-fetch-mock').enableMocks();
+
 module.exports = {
   testURL: 'http://localhost:9999',
   testPathIgnorePatterns: ['__mocks__/*'],
@@ -6,7 +8,7 @@ module.exports = {
   },
   moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx'],
   modulePaths: ['<rootDir>'],
-  setupFiles: ['<rootDir>/enzyme.config.js'],
+  setupFiles: ['<rootDir>/setupTests.js'],
   name: 'product-grid',
   coverageDirectory: 'coverage',
   coverageThreshold: {

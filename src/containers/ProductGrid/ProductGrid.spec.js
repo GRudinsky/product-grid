@@ -1,6 +1,9 @@
 import { mount } from 'enzyme';
 import ProductGrid from './ProductGrid';
 import { list } from '../../utils/services';
+
+jest.mock('../../utils/services');
+
 const products = [
   {
     productId: 100024698,
@@ -27,12 +30,20 @@ const products = [
     lowOnStock: 'FALSE',
     promotionBadge: '47% OFF',
     imageUrl: 'https://i8.amplience.net/i/Quiz/00100024699_XM?w=1024'
+  },
+  {
+    productId: 100024670,
+    name: 'Blue Jewel Clutch Bag',
+    description: '• Limited edition',
+    price: 0.99,
+    priceWas: 1.99,
+    available: 'TRUE',
+    quantity: 0,
+    lowOnStock: 'FALSE',
+    promotionBadge: '47% OFF',
+    imageUrl: 'https://i8.amplience.net/i/Quiz/00100024699_XM?w=1024'
   }
 ];
-// jest.mock('../../utils/services', () => {
-//   return { list: () => products };
-// });
-jest.mock('../../utils/services');
 
 describe('<ProductGrid />', () => {
   let wrapper;
@@ -55,10 +66,37 @@ describe('<ProductGrid />', () => {
       expect(component).toHaveLength(1);
     });
 
-    it('should display 2 product cards with SUCCESS response', () => {
+    it('should display 3 product cards with SUCCESS response and remove the checked items once the remove checked button has been clicked', () => {
       wrapper.update();
-      const component = wrapper.find('ProductCard');
-      expect(component).toHaveLength(2);
+      let cardComponent = wrapper.find('ProductCard');
+      expect(cardComponent).toHaveLength(3);
+
+      expect(wrapper.find('#removeChecked__button')).toHaveLength(0);
+      cardComponent
+        .at(1)
+        .find('input[type="checkBox"]')
+        .simulate('change', { target: { value: 100024699 } });
+
+      const button = wrapper.find('#removeChecked__button');
+      expect(button.text()).toBe('Remove 1 selected product');
+
+      cardComponent
+        .at(2)
+        .find('input[type="checkBox"]')
+        .simulate('change', { target: { value: 100024670 } });
+
+      expect(button.text()).toBe('Remove 2 selected products');
+
+      button.simulate('click');
+
+      expect(wrapper.find('#removeChecked__button')).toHaveLength(0);
+
+      cardComponent = wrapper.find('ProductCard');
+
+      expect(cardComponent).toHaveLength(1);
+      expect(cardComponent.find('input[value=100024698]')).toHaveLength(1);
+      expect(cardComponent.find('input[value=100024699]')).toHaveLength(0);
+      expect(cardComponent.find('input[value=100024670]')).toHaveLength(0);
     });
   });
 
@@ -73,7 +111,7 @@ describe('<ProductGrid />', () => {
       jest.resetAllMocks();
     });
 
-    it('should Error component with Error response', () => {
+    it('should render Error component with Error response', () => {
       wrapper.update();
       const component = wrapper.find('#errorMessage');
       expect(component).toHaveLength(1);

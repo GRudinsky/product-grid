@@ -20,7 +20,8 @@ const ProductGrid = () => {
       return {
         ...item,
         available: item.available === 'TRUE' ? true : false,
-        lowOnStock: item.lowOnStock === 'TRUE' ? true : false
+        lowOnStock: item.lowOnStock === 'TRUE' ? true : false,
+        isChecked: false
       };
     });
   };
@@ -53,6 +54,7 @@ const ProductGrid = () => {
       <div className="header">
         {checkedLength > 0 && (
           <Button
+            id="removeChecked"
             clickHandler={removeChecked}
             text={`Remove ${checkedLength} selected product${
               checkedLength === 1 ? '' : 's'

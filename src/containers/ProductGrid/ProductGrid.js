@@ -15,10 +15,21 @@ const ProductGrid = () => {
     getProducts();
   }, []);
 
+  const fixResponseBooleans = (response) => {
+    return response.map((item) => {
+      return {
+        ...item,
+        available: item.available === 'TRUE' ? true : false,
+        lowOnStock: item.lowOnStock === 'TRUE' ? true : false,
+        isChecked: false
+      };
+    });
+  };
+
   const getProducts = async () => {
     try {
       const response = await list(URL_MOCKY);
-      await setProducts(await response.json());
+      setProducts(fixResponseBooleans(response));
     } catch (e) {
       setError(ERROR_MESSAGE_LIST);
     }
@@ -33,18 +44,17 @@ const ProductGrid = () => {
     );
     setProducts(mappedProducts);
   };
-
   const removeChecked = () => {
     const unCheckedProducts = products.filter((item) => !item.isChecked);
     setProducts(unCheckedProducts);
   };
   const checkedLength = products.filter((item) => item.isChecked).length;
-
   return (
     <>
       <div className="header">
         {checkedLength > 0 && (
           <Button
+            id="removeChecked"
             clickHandler={removeChecked}
             text={`Remove ${checkedLength} selected product${
               checkedLength === 1 ? '' : 's'
@@ -53,8 +63,8 @@ const ProductGrid = () => {
         )}
       </div>
       <div className="mainWrapper">
-        {loading && <h2>Loading...</h2>}
-        {error && <h2>{error}</h2>}
+        {loading && <h2 id="loadingMessage">Loading...</h2>}
+        {error && <h2 id="errorMessage">{error}</h2>}
         {!loading && !error && (
           <div className="gridWrapper">
             {products?.map((item, idx) => {
